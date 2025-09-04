@@ -35,7 +35,7 @@ export const formatTimestamp = (timestamp: string): string => {
 };
 
 export const getEtherscanUrl = (hash: string, type: 'tx' | 'address' = 'tx', isTestnet: boolean = true): string => {
-  const baseUrl = 'https://etherscan.io';
+  const baseUrl = 'https://sepolia.etherscan.io';
   return `${baseUrl}/${type}/${hash}`;
 };
 
