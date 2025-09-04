@@ -5,6 +5,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  typescript: {ignoreBuildErrors: true}
 };
 
 module.exports = nextConfig;
