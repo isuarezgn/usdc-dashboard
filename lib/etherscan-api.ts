@@ -46,11 +46,11 @@ export class EtherscanAPI {
     }
   }
 
-  async getUSDCTransfers(address: string, page: number = 1, offset: number = 100): Promise<EtherscanTransaction[]> {
+  async getUSDCTransfers(address: string, page: number = 1, offset: number = 100, contractAddress?: string): Promise<EtherscanTransaction[]> {
     const params = {
       module: 'account',
       action: 'tokentx',
-      contractaddress: this.contractAddress,
+      contractaddress: contractAddress || this.contractAddress,
       address: address,
       page: page.toString(),
       offset: offset.toString(),

@@ -41,8 +41,12 @@ export function Dashboard() {
   const [recentTransactions, setRecentTransactions] = useState<EtherscanTransaction[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(false);
-  const [contractAddress, setContractAddress] = useState('');
-  const [inputAddress, setInputAddress] = useState('');
+
+  // Initialize contract address from localStorage if available
+  const [contractAddress, setContractAddress] = useState(() => {
+    return typeof window !== 'undefined' ? localStorage.getItem('usdc_contract_address') || '' : '';
+  });
+  const [inputAddress, setInputAddress] = useState(contractAddress);
 
   useEffect(() => {
     if (isConnected && address && contractAddress) {
@@ -50,14 +54,19 @@ export function Dashboard() {
     }
   }, [isConnected, address, contractAddress]);
 
+  // Save contract address to localStorage whenever it changes
+  useEffect(() => {
+    if (contractAddress) {
+      localStorage.setItem('usdc_contract_address', contractAddress);
+    }
+  }, [contractAddress]);
+
   const loadDashboardData = async () => {
     if (!address || !contractAddress) return;
 
     setLoading(true);
     try {
       const etherscanApi = new EtherscanAPI(true); // Using testnet
-      
-      // Get recent transactions for the selected contract address
       const transactions = await etherscanApi.getUSDCTransfers(address, 1, 100, contractAddress);
       setRecentTransactions(transactions.slice(0, 5));
 
