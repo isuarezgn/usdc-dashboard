@@ -41,22 +41,24 @@ export function Dashboard() {
   const [recentTransactions, setRecentTransactions] = useState<EtherscanTransaction[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [contractAddress, setContractAddress] = useState('');
+  const [inputAddress, setInputAddress] = useState('');
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && contractAddress) {
       loadDashboardData();
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, contractAddress]);
 
   const loadDashboardData = async () => {
-    if (!address) return;
+    if (!address || !contractAddress) return;
 
     setLoading(true);
     try {
       const etherscanApi = new EtherscanAPI(true); // Using testnet
       
-      // Get recent transactions
-      const transactions = await etherscanApi.getUSDCTransfers(address, 1, 100);
+      // Get recent transactions for the selected contract address
+      const transactions = await etherscanApi.getUSDCTransfers(address, 1, 100, contractAddress);
       setRecentTransactions(transactions.slice(0, 5));
 
       // Calculate metrics
@@ -223,8 +225,35 @@ export function Dashboard() {
     );
   }
 
+  // Add contract address input UI
   return (
     <div className="space-y-6">
+      <div className="flex items-center gap-4 mb-4">
+        <input
+          type="text"
+          value={inputAddress}
+          onChange={e => setInputAddress(e.target.value)}
+          placeholder="Enter USDC contract address"
+          className="border rounded px-3 py-2 w-96"
+        />
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          onClick={() => {
+            setContractAddress(inputAddress);
+          }}
+          disabled={loading || !inputAddress}
+        >
+          Set Contract Address
+        </button>
+        <button
+          className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition"
+          onClick={loadDashboardData}
+          disabled={loading || !contractAddress}
+        >
+          Refresh
+        </button>
+      </div>
+
       {/* Metrics Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="hover:shadow-lg transition-shadow">
