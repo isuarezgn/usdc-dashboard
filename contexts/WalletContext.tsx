@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { ethers } from 'ethers';
+import { BaseContract, ethers } from 'ethers';
 import { WalletState } from '@/types/blockchain';
 import { connectToMetaMask, switchToTestnet, getUSDCContract, formatUSDCAmount } from '@/lib/wallet-utils';
 import { DEFAULT_CHAIN_ID } from '@/lib/constants';
@@ -159,7 +159,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const usdcContract = getUSDCContract(provider).connect(signer);
+      const usdcContract: BaseContract = getUSDCContract(provider).connect(signer);
 
       const amountWei = ethers.parseUnits(amount, 6); // USDC has 6 decimals
       const tx = await usdcContract.transfer(to, amountWei);

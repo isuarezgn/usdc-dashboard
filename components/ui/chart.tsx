@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import {
-  ResponsiveContainer,
   Tooltip as RechartsTooltip,
   Legend as RechartsLegend,
+  LegendProps as RechartsLegendProps
 } from 'recharts';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -59,7 +59,7 @@ const ChartContainer = React.forwardRef<
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <ResponsiveContainer>{children}</ResponsiveContainer>
+        {children}
       </div>
     </ChartContext.Provider>
   );
@@ -105,11 +105,17 @@ const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof RechartsTooltip> &
     React.ComponentProps<'div'> & {
+      payload?:any,
+      label?:string,
       hideLabel?: boolean;
       hideIndicator?: boolean;
       indicator?: 'line' | 'dot' | 'dashed';
       nameKey?: string;
       labelKey?: string;
+      className: string,
+      labelFormatter: any,
+      formatter: any,
+      color: string,      
     }
 >(
   (
@@ -259,10 +265,11 @@ const ChartLegend = RechartsLegend;
 
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<'div'> &
-    Pick<RechartsLegendProps, 'payload' | 'verticalAlign'> & {
+  React.ComponentProps<'div'>  & {
       hideIcon?: boolean;
       nameKey?: string;
+      payload?:any,
+      verticalAlign: any
     }
 >(
   (
