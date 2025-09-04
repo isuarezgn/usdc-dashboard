@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# USDC Dashboard - Ethereum Testnet
+
+Frontend application for monitoring and managing USDC transactions on the Ethereum testnet.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+1. **MetaMask Extension**: Install MetaMask browser extension
+2. **Etherscan API Key**: Register at [Etherscan.io](https://etherscan.io/apis) for a free API key
+3. **Test USDC**: Get test USDC tokens for testing transfers
+
+### Installation
+
+1. Clone the repository and install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Copy `.env.example` file and rename it to  `.env`, update the keys with your Etherscan API key:
+```
+NEXT_PUBLIC_ETHERSCAN_API_KEY=your_api_key_here
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+### Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. **Connect Wallet**: Click "Connect MetaMask" to connect your wallet
+2. **View Dashboard**: Explore your transaction metrics and recent activity
+3. **Browse History**: Use the Transaction History tab to view and filter all transactions
+4. **Send USDC**: Use the Send USDC tab to transfer tokens to other addresses
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testing
 
-## Deploy on Vercel
+Run the test suite:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm test
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run tests in watch mode:
+
+```bash
+npm run test:watch
+```
+
+## Architecture
+
+### Components Structure
+- `WalletConnection`: Handles MetaMask integration and wallet state
+- `Dashboard`: Shows transaction metrics with interactive charts
+- `TransactionHistory`: Advanced transaction table with filtering
+- `TransferUSDC`: Secure USDC transfer interface
+- `Navigation`: Tab-based navigation system
+
+### State Management
+- `WalletContext`: Centralized wallet state with React Context API
+- Custom hooks for wallet operations and data fetching
+- Proper error handling and loading states throughout
+
+### Security Features
+- Input validation with Zod schemas
+- Address validation for all Ethereum addresses
+- Secure transaction confirmation flows
+- Error boundaries for graceful error handling
+
+## Performance Optimizations
+
+- Memoized transaction filtering and sorting
+- Lazy loading for transaction data
+- Efficient re-rendering with React hooks
+- Responsive image loading for charts
+
+## Accessibility
+
+- WCAG 2.1 compliant design
+- Keyboard navigation support
+- Screen reader friendly components
+- High contrast color schemes
+
+## Browser Support
+
+- Chrome/Chromium-based browsers (recommended)
+- Firefox
+- Safari
+- Edge
